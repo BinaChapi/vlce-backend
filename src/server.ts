@@ -22,9 +22,6 @@ const helmet = createRequire(import.meta.url)("helmet") as (
   options?: HelmetOptions,
 ) => RequestHandler;
 
-// Inside your existing startup function:
-await prisma.$connect();
-
 const app = express();
 const port = Number(process.env.PORT || 3001);
 const allowedOrigins = (process.env.CORS_ORIGINS || "https://vlce.vercel.app/")
