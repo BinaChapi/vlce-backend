@@ -1,11 +1,13 @@
 import "dotenv/config";
+import { createRequire } from "node:module";
 import express, {
   type NextFunction,
   type Request,
   type Response,
+  type RequestHandler,
 } from "express";
+import type { HelmetOptions } from "helmet";
 import cors from "cors";
-import * as helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -15,6 +17,10 @@ import { z } from "zod";
 import { prisma } from "./db.js";
 import { requireAdmin } from "./auth.js";
 import { requiredContentSections } from "./contentSections.js";
+
+const helmet = createRequire(import.meta.url)("helmet") as (
+  options?: HelmetOptions,
+) => RequestHandler;
 
 // Inside your existing startup function:
 await prisma.$connect();
@@ -27,7 +33,7 @@ const allowedOrigins = (process.env.CORS_ORIGINS || "https://vlce.vercel.app/")
   .filter(Boolean);
 const sectionKeySchema = z.string().regex(/^[a-zA-Z][a-zA-Z0-9_-]{0,63}$/);
 app.disable("x-powered-by");
-app.use(helmet.default({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
+app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 app.use(
   cors({
     origin(origin, cb) {
