@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { createRequire } from "node:module";
+import { pathToFileURL } from "node:url";
 import express, {
   type NextFunction,
   type Request,
@@ -24,7 +25,7 @@ const helmet = createRequire(import.meta.url)("helmet") as (
 
 const app = express();
 const port = Number(process.env.PORT || 3001);
-const allowedOrigins = (process.env.CORS_ORIGINS || "https://vlce.vercel.app/")
+const allowedOrigins = (process.env.CORS_ORIGINS || "https://vlce.vercel.app")
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean);
@@ -360,11 +361,8 @@ if (!Number.isInteger(port) || port < 1 || port > 65535) {
 
 async function startServer() {
   try {
-    await prisma.$connect();
-
     const server = app.listen(port, () => {
       console.log(`VLCE API listening on http://localhost:${port}`);
-      console.log("Database connection established.");
     });
 
     const shutdown = () => {
@@ -382,4 +380,8 @@ async function startServer() {
   }
 }
 
-void startServer();
+export default app;
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  void startServer();
+}
