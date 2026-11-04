@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { content } from '../../src/content.js'
+import { content } from './content.js'
 import { prisma } from './db.js'
 
 async function main() {

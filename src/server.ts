@@ -14,7 +14,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { z } from "zod";
 import { prisma } from "./db.js";
 import { requireAdmin } from "./auth.js";
-import { requiredContentSections } from "./contentSections";
+import { requiredContentSections } from "./contentSections.js";
 
 // Inside your existing startup function:
 await prisma.$connect();

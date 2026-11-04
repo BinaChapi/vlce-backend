@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { Prisma } from '@prisma/client'
-import { defaultSocialLinks } from '../../src/content.js'
+import { defaultSocialLinks } from './content.js'
 import { prisma } from './db.js'
 
 async function main() {
