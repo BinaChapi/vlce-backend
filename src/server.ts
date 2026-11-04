@@ -5,7 +5,7 @@ import express, {
   type Response,
 } from "express";
 import cors from "cors";
-import helmet from "helmet";
+import * as helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -21,13 +21,13 @@ await prisma.$connect();
 
 const app = express();
 const port = Number(process.env.PORT || 3001);
-const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173")
+const allowedOrigins = (process.env.CORS_ORIGINS || "https://vlce.vercel.app/")
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean);
 const sectionKeySchema = z.string().regex(/^[a-zA-Z][a-zA-Z0-9_-]{0,63}$/);
 app.disable("x-powered-by");
-app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
+app.use(helmet.default({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 app.use(
   cors({
     origin(origin, cb) {
