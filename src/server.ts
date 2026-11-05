@@ -1,13 +1,13 @@
 import "dotenv/config";
-import { createRequire } from "node:module";
 import { pathToFileURL } from "node:url";
+
 import express, {
   type NextFunction,
   type Request,
   type Response,
-  type RequestHandler,
 } from "express";
-import type { HelmetOptions } from "helmet";
+
+import helmet from "helmet";
 import cors from "cors";
 import { rateLimit } from "express-rate-limit";
 import bcrypt from "bcryptjs";
@@ -15,13 +15,10 @@ import jwt from "jsonwebtoken";
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import { z } from "zod";
+
 import { prisma } from "./db.js";
 import { requireAdmin } from "./auth.js";
 import { requiredContentSections } from "./contentSections.js";
-
-const helmet = createRequire(import.meta.url)("helmet") as (
-  options?: HelmetOptions,
-) => RequestHandler;
 
 const app = express();
 const port = Number(process.env.PORT || 3001);
