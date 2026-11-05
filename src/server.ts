@@ -7,7 +7,8 @@ import express, {
   type Response,
 } from "express";
 
-import helmet from "helmet";
+import { createRequire } from "node:module";
+import type { RequestHandler } from "express";
 import cors from "cors";
 import { rateLimit } from "express-rate-limit";
 import bcrypt from "bcryptjs";
@@ -19,6 +20,10 @@ import { z } from "zod";
 import { prisma } from "./db.js";
 import { requireAdmin } from "./auth.js";
 import { requiredContentSections } from "./contentSections.js";
+
+const require = createRequire(import.meta.url);
+
+const helmet = require("helmet") as (options?: object) => RequestHandler;
 
 const app = express();
 const port = Number(process.env.PORT || 3001);
